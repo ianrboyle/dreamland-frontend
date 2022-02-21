@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
+import LoginButton from './components/LoginButton';
 
 
 function App() {
 
   return (
     <div className="App">
-
+      <LoginButton />
     </div>
   );
 }
