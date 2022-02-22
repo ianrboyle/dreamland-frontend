@@ -4,21 +4,27 @@ import React, {useState, ChangeEvent} from 'react';
 const LoginButton = () => {
 
   type User = {
-    username: string,
-    password: string
+    name: string | undefined,
+    email: string,
+    password: string,
+    passwordConfirmation: string
   }
   const [userParams, setUserParams] = useState<User | undefined>()
   const [isClicked, setIsClicked] = useState(false)
-  const createUser = async () => {
+  
+  
+  const createUser = async (e: any) => {
+    e.preventDefault()
     try {
-      const createUser =  await fetch("http://localhost:5000/users", {method: "POST"}).then(response => {
-        console.log(createUser)
-        return response.json();
-      }).then (data => {
-        console.log(data) 
-        setUserParams(data)
-      })
-    
+      if (userParams){
+        const { name, email, password, passwordConfirmation } = userParams
+        const body = {name, email, password, passwordConfirmation}
+      const response =  await fetch("http://localhost:5000/users", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body) 
+    })
+    console.log(response, body)
+    window.location.href = "/"
+      }
+      
     } catch (err: any) {
       console.error(err.message)
     }
@@ -41,9 +47,11 @@ const LoginButton = () => {
   return (
     <div>
       {isClicked ? <p>IS CLICKED!</p> : <p>NOT CLICKED!</p>}
-      <p>Username</p>: <input type="text" name="username"value={userParams?.username} onChange={handleUserParamsChange}/>
+      <p>Name</p>: <input type="text" name="name"value={userParams?.name} onChange={handleUserParamsChange}/>
+      <p>Email</p>: <input type="text" name="email"value={userParams?.email} onChange={handleUserParamsChange}/>
       <p>Password</p>: <input type="text" name="password" value={userParams?.password} onChange={handleUserParamsChange}/>
-      <button onClick={handleClick}>
+      <p>Password Confirmation</p>: <input type="text" name="passwordConfirmation" value={userParams?.passwordConfirmation} onChange={handleUserParamsChange}/>
+      <button onClick={createUser}>
         Register
       </button>
     </div>
