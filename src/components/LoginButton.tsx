@@ -7,7 +7,8 @@ const LoginButton = () => {
     name: string | undefined,
     email: string,
     password: string,
-    passwordConfirmation: string
+    passwordConfirmation: string,
+    candidate: boolean
   }
   const [userParams, setUserParams] = useState<User | undefined>()
   const [isClicked, setIsClicked] = useState(false)
