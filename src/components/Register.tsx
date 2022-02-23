@@ -1,5 +1,6 @@
 import React, {useState, ChangeEvent} from 'react';
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 const Register = () => {
 
@@ -11,16 +12,18 @@ const Register = () => {
   }
   const [userParams, setUserParams] = useState<User | undefined>()
 
-  const [isCandidate, setIsCandidate] = useState(false)
 
+  const [isCandidateOrRecruiter, setIsCandidateOrRecruiter] = React.useState("candidate");
 
   const createUser = async (e: any) => {
     e.preventDefault()
     try {
       if (userParams){
         const { name, email, password, passwordConfirmation } = userParams
-        const candidate = isCandidate
+        let candidate = true
+        isCandidateOrRecruiter === "candidate" ?  candidate = true : candidate = false
         const body = {name, email, password, passwordConfirmation, candidate}
+        console.log(body)
       const response =  await fetch("http://localhost:5000/users", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body) 
     })
     console.log(response, body)
@@ -31,7 +34,13 @@ const Register = () => {
       console.error(err.message)
     }
   }
-  
+  const handleCandidateOrRecruiterChange = (
+    e: React.MouseEvent<HTMLElement>,
+    newisCandidateOrRecruiter: string,
+  ) => {
+      setIsCandidateOrRecruiter(newisCandidateOrRecruiter)
+
+  };
 
   const handleUserParamsChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -41,19 +50,10 @@ const Register = () => {
     })
   }
 
-  const handleCandidateCheckBox = (e:ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.target.name === "candidate"){
-      setIsCandidate(true)
-    }
-    if (e.target.name === "recruiter"){
-      setIsCandidate(false)
-    }
-    
-  }
+
 
   
-  console.log(isCandidate)
+  console.log(userParams)
   return (
     <div>
       <p>Name: </p> 
@@ -68,11 +68,16 @@ const Register = () => {
       <p>Password Confirmation:</p> 
       <input type="text" name="passwordConfirmation" value={userParams?.passwordConfirmation} onChange={handleUserParamsChange}/>
       <div> 
-      <h3>Are you a: </h3>
-      <h3>Candidate? <input defaultChecked={isCandidate} type="checkbox" name="candidate" onChange={handleCandidateCheckBox}/></h3>
-  
-      <h3>or Recruiter? <input type="checkbox" name="recruiter" onChange={handleCandidateCheckBox}/></h3> 
-      
+      <h3>Who are you? </h3>
+      <ToggleButtonGroup
+      color="primary"
+      value={isCandidateOrRecruiter}
+      exclusive
+      onChange={handleCandidateOrRecruiterChange}
+    >
+      <ToggleButton value="candidate">Candidate</ToggleButton>
+      <ToggleButton value="recruiter">Recruiter</ToggleButton>
+    </ToggleButtonGroup>
       </div>
      
 <br></br>
@@ -81,18 +86,6 @@ const Register = () => {
       </button>
 
 
-      <div className="toggle-switch">
-        <input
-          type="checkbox"
-          className="toggle-switch-checkbox"
-          name="toggleSwitch"
-          id="toggleSwitch"
-        />
-        <label className="toggle-switch-label" htmlFor="toggleSwitch">
-          <span className="toggle-switch-inner" />
-          <span className="toggle-switch-switch" />
-        </label>
-      </div>
     </div>
   )
 }
