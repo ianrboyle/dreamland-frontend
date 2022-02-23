@@ -1,7 +1,7 @@
 import React, {useState, ChangeEvent} from 'react';
 
 
-const LoginButton = () => {
+const Register = () => {
 
   type User = {
     name: string | undefined,
@@ -10,9 +10,10 @@ const LoginButton = () => {
     passwordConfirmation: string,
   }
   const [userParams, setUserParams] = useState<User | undefined>()
-  const [isClicked, setIsClicked] = useState(false)
-  
+
   const [isCandidate, setIsCandidate] = useState(false)
+
+
   const createUser = async (e: any) => {
     e.preventDefault()
     try {
@@ -48,7 +49,7 @@ const LoginButton = () => {
     if (e.target.name === "recruiter"){
       setIsCandidate(false)
     }
-   
+    
   }
 
   
@@ -78,8 +79,22 @@ const LoginButton = () => {
       <button onClick={createUser}>
         Register
       </button>
+
+
+      <div className="toggle-switch">
+        <input
+          type="checkbox"
+          className="toggle-switch-checkbox"
+          name="toggleSwitch"
+          id="toggleSwitch"
+        />
+        <label className="toggle-switch-label" htmlFor="toggleSwitch">
+          <span className="toggle-switch-inner" />
+          <span className="toggle-switch-switch" />
+        </label>
+      </div>
     </div>
   )
 }
 
-export default LoginButton
+export default Register
