@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import LoginButton from './components/LoginButton';
+import Register from './components/Register';
 
 function App() {
 
   return (
     <div className="App">
-      <LoginButton />
+      <Register />
     </div>
   )
 }
